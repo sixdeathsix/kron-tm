@@ -1,5 +1,5 @@
 import {$axios} from "../service/service";
-import userapi from "../service/auth";
+import authapi from "../service/auth";
 
 export default {
     state() {
@@ -30,7 +30,7 @@ export default {
     },
     actions: {
         onLogin({commit}, {username, password}) {
-            return userapi.login({username, password}).then((res) => {
+            return authapi.login({username, password}).then((res) => {
                 commit('setToken', res.data.accessToken);
                 commit('setUsername', res.data.username);
                 commit('setUserRole', res.data.role);
@@ -40,7 +40,7 @@ export default {
         },
 
         onRegister({commit}, {surname, name, patronymic, email, phone, username, password}) {
-            return userapi.register({surname, name, patronymic, email, phone, username, password}).then((res) => {
+            return authapi.register({surname, name, patronymic, email, phone, username, password}).then((res) => {
                 commit('setToken', res.data.accessToken);
                 commit('setUsername', res.data.username);
                 commit('setUserRole', res.data.role);

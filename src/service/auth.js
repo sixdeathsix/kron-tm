@@ -1,7 +1,7 @@
 import {$axios} from "./service";
 
 const url = 'auth';
-class UserApi {
+class AuthApi {
 
 
     login(userdata) {
@@ -14,4 +14,4 @@ class UserApi {
 
 }
 
-export default new UserApi();
+export default new AuthApi();
