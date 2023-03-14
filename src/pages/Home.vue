@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import {$axios} from "../service/service.js";
+import objectapi from "../service/object";
 
 export default {
   data() {
@@ -38,19 +38,16 @@ export default {
     }
   },
   methods: {
-    getAllObjects() {
-      this.$store.dispatch('getObjects').then(() => {
-        this.objects = this.$store.state.objects.objects;
-        this.filteredObjects = this.$store.state.objects.objects;
-        $axios.get('object/types').then(res => {
-          this.types = res.data;
-          this.loading = false;
-        }).catch(e => {
-          this.$toast.add({severity:'error', detail: e.response.data, life: 3000});
-        });
-      }).catch(e => {
-        this.$toast.add({severity:'error', detail: e.response.data, life: 3000});
-      });
+    async getAllData() {
+      try {
+        let [objects, types] = await Promise.all([objectapi.getAllObjects(), objectapi.getAllObjectTypes()]);
+        this.objects = objects.data;
+        this.filteredObjects = objects.data;
+        this.types = types.data;
+        this.loading = false;
+      } catch (e) {
+        this.$toast.add({severity: 'error', detail: 'Произошла ошибка', life: 3000});
+      }
     },
     filter() {
       if (this.selectedType === null) {
@@ -63,7 +60,7 @@ export default {
     }
   },
   mounted() {
-    this.getAllObjects();
+    this.getAllData();
   }
 }
 </script>
