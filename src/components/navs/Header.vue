@@ -7,7 +7,7 @@
 
     <div class="">
         <div class="flex align-items-center px-3">
-          <p class="font-medium text-xl px-3 border-right-2">{{username}}</p>
+          <p class="font-medium text-xl px-3 border-right-2">{{user.username}}</p>
           <Button severity="secondary" @click="logout" class="mx-3" label="Выход" icon="pi pi-user" size="small" outlined  />
         </div>
     </div>
@@ -19,7 +19,7 @@
 export default {
   data() {
     return {
-      username: this.$store.state.user.user.username
+      user: this.$store.state.user.user
     }
   },
   methods: {

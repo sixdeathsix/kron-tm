@@ -1,4 +1,3 @@
-import {$axios} from "../service/service";
 import authapi from "../service/auth";
 
 export default {
@@ -34,7 +33,6 @@ export default {
                 commit('setToken', res.data.accessToken);
                 commit('setUsername', res.data.username);
                 commit('setUserRole', res.data.role);
-                $axios.defaults.headers['authorization'] = `Bearer ${res.data.accessToken}`;
                 location.reload();
             });
         },
@@ -44,7 +42,6 @@ export default {
                 commit('setToken', res.data.accessToken);
                 commit('setUsername', res.data.username);
                 commit('setUserRole', res.data.role);
-                $axios.defaults.headers['authorization'] = `Bearer ${res.data.accessToken}`;
                 location.reload();
             })
         },
@@ -53,7 +50,6 @@ export default {
             localStorage.removeItem('token');
             localStorage.removeItem('username');
             localStorage.removeItem('user_role');
-            delete $axios.defaults.headers['authorization'];
             location.reload();
         }
     }

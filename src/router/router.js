@@ -13,7 +13,7 @@ function authGuard(to, from ,next) {
 }
 
 function noAuthGuard(to, from ,next) {
-    if (token != null) next({ name: 'home' })
+    if (token != null) next({ name: 'monitoring' })
     else next()
 }
 
@@ -24,8 +24,8 @@ const routes = [
     },
     {
         path: "/",
-        name: "home",
-        component: () => import("../pages/Home.vue"),
+        name: "monitoring",
+        component: () => import("../pages/Monitoring.vue"),
         beforeEnter: authGuard
     },
     {

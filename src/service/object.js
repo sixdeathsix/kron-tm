@@ -3,7 +3,6 @@ import {$axios} from "./service";
 const url = 'object';
 class ObjectApi {
 
-
     getAllObjects() {
         return $axios.get(url);
     }

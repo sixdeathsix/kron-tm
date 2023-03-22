@@ -12,9 +12,15 @@ export const $axios = axios.create({
     headers: headers,
 });
 
-const token = localStorage.getItem('token');
-
-if (token) $axios.defaults.headers['authorization'] = `Bearer ${token}`;
+$axios.interceptors.request.use(
+    response => {
+        if (localStorage.getItem('token')) {
+            response.headers['authorization'] = `Bearer ${localStorage.getItem('token')}`;
+        }
+        return response;
+    },
+    error => Promise.reject(error)
+);
 
 $axios.interceptors.response.use(
     response => response,

@@ -1,13 +1,20 @@
 <template>
-  <DataTable :value="filteredObjects" paginator showGridlines :rows="10" :loading="loading">
+  <DataTable v-model:filters="filters" :value="objects" filterDisplay="row" paginator showGridlines :rows="10" :loading="loading">
+    <template #empty> No objects found. </template>
+    <template #loading> Loading objects data. Please wait. </template>
     <Column field="object_name" header="Объект" sortable></Column>
-    <Column field="objectType.object_type">
-      <template #header>
-        <Dropdown style="width: 10vw" v-model="selectedType" @change="filter" :options="types" :placeholder="selectedType" class="p-column-filter" showClear>
+    <Column header="Тип" filterField="objectType" :showFilterMenu="false" style="width: 10vw">
+      <template #body="{ data }">
+        <div class="flex align-items-center gap-2">
+          <span>{{ data.objectType.object_type }}</span>
+        </div>
+      </template>
+      <template #filter="{ filterModel, filterCallback }">
+        <MultiSelect v-model="filterModel.value" @change="filterCallback()" :options="types" optionLabel="object_type" placeholder="Тип" class="p-column-filter" style="width: 10vw">
           <template #option="slotProps">
-            <p>{{slotProps.option.object_type}}</p>
+              <span>{{ slotProps.option.object_type }}</span>
           </template>
-        </Dropdown>
+        </MultiSelect>
       </template>
     </Column>
     <Column field="flange_no" header="№ фл" ></Column>
@@ -26,15 +33,19 @@
 
 <script>
 import objectapi from "../service/object";
+import { FilterMatchMode } from "primevue/api";
 
 export default {
   data() {
     return {
-      objects: null,
-      filteredObjects: null,
       loading: true,
-      selectedType: "Тип",
-      types: null
+      objects: null,
+      types: null,
+      names: ['Скважина-12', 'Скважина-13', 'Скважина-14', 'КНС-2'],
+      filters: {
+        objectType: { value: null, matchMode: FilterMatchMode.IN },
+        object_name: { value: null, matchMode: FilterMatchMode.IN }
+      },
     }
   },
   methods: {
@@ -42,20 +53,10 @@ export default {
       try {
         let [objects, types] = await Promise.all([objectapi.getAllObjects(), objectapi.getAllObjectTypes()]);
         this.objects = objects.data;
-        this.filteredObjects = objects.data;
         this.types = types.data;
         this.loading = false;
       } catch (e) {
         this.$toast.add({severity: 'error', detail: 'Произошла ошибка', life: 3000});
-      }
-    },
-    filter() {
-      if (this.selectedType === null) {
-        this.selectedType = "Тип";
-        this.filteredObjects = this.objects;
-      } else {
-        this.filteredObjects = this.objects.filter((i) => i.objectType.object_type === this.selectedType.object_type)
-        this.selectedType = this.selectedType.object_type;
       }
     }
   },
