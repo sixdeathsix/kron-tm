@@ -1,51 +1,42 @@
 <template>
-  <DataTable v-model:filters="filters" :value="objects" filterDisplay="row" paginator showGridlines :rows="10" :loading="loading">
-    <template #empty> No objects found. </template>
-    <template #loading> Loading objects data. Please wait. </template>
-    <Column field="object_name" header="Объект" sortable></Column>
-    <Column header="Тип" filterField="objectType" :showFilterMenu="false" style="width: 10vw">
-      <template #body="{ data }">
-        <div class="flex align-items-center gap-2">
-          <span>{{ data.objectType.object_type }}</span>
-        </div>
-      </template>
-      <template #filter="{ filterModel, filterCallback }">
-        <MultiSelect v-model="filterModel.value" @change="filterCallback()" :options="types" optionLabel="object_type" placeholder="Тип" class="p-column-filter" style="width: 10vw">
-          <template #option="slotProps">
-              <span>{{ slotProps.option.object_type }}</span>
-          </template>
-        </MultiSelect>
-      </template>
-    </Column>
-    <Column field="flange_no" header="№ фл" ></Column>
-    <Column field="description" header="Описание" sortable ></Column>
-    <Column field="" header="Накоп пред сут" ></Column>
-    <Column field="" header="Накоп тек сут" ></Column>
-    <Column field="" header="Qреж м3/сут" sortable ></Column>
-    <Column field="" header="Qсут м3/сут" sortable ></Column>
-    <Column field="" header="Отк от режима, м3" sortable ></Column>
-    <Column field="" header="Рлин, атм" ></Column>
-    <Column field="" header="Дата обновления" ></Column>
-    <Column field="" header="Событие" sortable ></Column>
-    <Column field="" header="Дата события" sortable ></Column>
-  </DataTable>
+  <MyDataTable
+      :objects="objects"
+      :loading="loading"
+      :array="array"
+      :filters="filters"
+      :options="{types: types}"
+  />
 </template>
 
 <script>
 import objectapi from "../service/object";
 import { FilterMatchMode } from "primevue/api";
+import MyDataTable from "../components/datatables/MyDataTable.vue";
 
 export default {
+  components: {MyDataTable},
   data() {
     return {
       loading: true,
       objects: null,
       types: null,
-      names: ['Скважина-12', 'Скважина-13', 'Скважина-14', 'КНС-2'],
       filters: {
-        objectType: { value: null, matchMode: FilterMatchMode.IN },
-        object_name: { value: null, matchMode: FilterMatchMode.IN }
+        objectType: { value: null, matchMode: FilterMatchMode.IN }
       },
+      array: [
+        {header: 'Объект', field: 'object_name', sortable: true},
+        {header: 'Тип', filterField: 'objectType', data: {data: 'objectType', key: 'object_type'}, slotProps: 'object_type'},
+        {header: '№ фл', field: 'flange_no', sortable: true},
+        {header: 'Описание', field: 'description', sortable: true},
+        {header: 'Накоп пред сут', field: '', sortable: true},
+        {header: 'Накоп тек сут', field: ''},
+        {header: 'Qреж м3/сут', field: ''},
+        {header: 'Qсут м3/сут', field: ''},
+        {header: 'Отк от режима, м3', field: ''},
+        {header: 'Рлин, атм', field: ''},
+        {header: 'Событие', field: 'event.eventType.event_type', sortable: true},
+        {header: 'Дата события', field: 'event.event_date', sortable: true},
+      ]
     }
   },
   methods: {
