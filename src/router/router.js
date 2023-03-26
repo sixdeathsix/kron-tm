@@ -39,7 +39,13 @@ const routes = [
         name: "signup",
         component: () => import("../pages/Signup.vue"),
         beforeEnter: noAuthGuard
-    }
+    },
+    {
+        path: "/object/:id",
+        name: "object",
+        component: () => import("../pages/Object.vue"),
+        beforeEnter: authGuard
+    },
 ];
 
 export const router = createRouter({

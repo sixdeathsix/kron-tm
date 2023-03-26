@@ -5,6 +5,9 @@
       :array="array"
       :filters="filters"
       :options="{types: types}"
+      :rowClass="rowClass"
+      :pagination="true"
+      filterDisplay="row"
   />
 </template>
 
@@ -24,8 +27,8 @@ export default {
         objectType: { value: null, matchMode: FilterMatchMode.IN }
       },
       array: [
-        {header: 'Объект', field: 'object_name', sortable: true},
-        {header: 'Тип', filterField: 'objectType', data: {data: 'objectType', key: 'object_type'}, slotProps: 'object_type'},
+        {header: 'Объект', field: 'object_name', sortable: true, link: "object", param: 'object_id'},
+        {header: 'Тип', filterField: 'objectType', data: {data: 'objectType', key: 'object_type'}, slotProps: 'object_type', optionLabel: 'object_type', option: 'types', placeholder: 'Тип'},
         {header: '№ фл', field: 'flange_no', sortable: true},
         {header: 'Описание', field: 'description', sortable: true},
         {header: 'Накоп пред сут', field: '', sortable: true},
@@ -42,14 +45,26 @@ export default {
   methods: {
     async getAllData() {
       try {
-        let [objects, types] = await Promise.all([objectapi.getAllObjects(), objectapi.getAllObjectTypes()]);
+        let [objects, types] = await Promise.all([
+            objectapi.getAllObjects(),
+            objectapi.getAllObjectTypes()
+        ]);
+
         this.objects = objects.data;
         this.types = types.data;
-        this.loading = false;
+
+        this.loading = false
       } catch (e) {
         this.$toast.add({severity: 'error', detail: 'Произошла ошибка', life: 3000});
       }
-    }
+    },
+    rowClass(data) {
+      return [
+        { 'bg-green-300': data['event']['eventType']['event_type'] === 'Замер положителен' },
+        { 'bg-yellow-200': data['event']['eventType']['event_type'] === 'Нулевой дебит' },
+        { 'bg-yellow-200': data['event']['eventType']['event_type'] === 'Отсутствует связь' }
+      ];
+    },
   },
   mounted() {
     this.getAllData();

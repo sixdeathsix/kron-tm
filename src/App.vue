@@ -1,6 +1,7 @@
 <template>
   <Header v-if="token != null" />
   <div class="container">
+    <Router v-if="token != null" />
     <router-view />
   </div>
   <Toast position="top-right"  />
@@ -9,9 +10,10 @@
 <script>
 
 import Header from "./components/navs/Header.vue";
+import Router from "./components/navs/Router.vue";
 
 export default {
-  components: {Header},
+  components: {Router, Header},
   data() {
     return {
       token: this.$store.state.user.user.token
@@ -32,5 +34,11 @@ export default {
   .container {
     max-width: 1600px;
     margin: 0 auto;
+  }
+
+  .router-link-active {
+    color: #495057;
+    text-decoration: none;
+    margin-right: 20px;
   }
 </style>
