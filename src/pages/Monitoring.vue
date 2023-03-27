@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       loading: true,
-      objects: null,
+      objects: this.$store.state.object.objects,
       types: null,
       filters: {
         objectType: { value: null, matchMode: FilterMatchMode.IN }
@@ -43,16 +43,10 @@ export default {
     }
   },
   methods: {
-    async getAllData() {
+    async getAllTypes() {
       try {
-        let [objects, types] = await Promise.all([
-            objectapi.getAllObjects(),
-            objectapi.getAllObjectTypes()
-        ]);
-
-        this.objects = objects.data;
+        let types = await objectapi.getAllObjectTypes();
         this.types = types.data;
-
         this.loading = false
       } catch (e) {
         this.$toast.add({severity: 'error', detail: 'Произошла ошибка', life: 3000});
@@ -67,7 +61,7 @@ export default {
     },
   },
   mounted() {
-    this.getAllData();
+    this.getAllTypes();
   }
 }
 </script>

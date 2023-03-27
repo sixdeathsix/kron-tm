@@ -34,7 +34,6 @@ export default {
   components: {MyDataTable},
   data() {
     return {
-      objectId: this.$route.params.id,
       object: null,
       types: null,
       categories: null,
@@ -72,13 +71,13 @@ export default {
         this.loading = true;
         let [object, types, categories, properties] = await Promise.all([
             eventapi.getOneObjectEvents(
-                this.objectId,
-                 this.date_start != null ? this.date_start.toLocaleDateString('sv-SE') + ' ' +  this.date_start.toLocaleTimeString() : null,
-                  this.date_end != null ? this.date_end.toLocaleDateString('sv-SE') + ' ' + this.date_end.toLocaleTimeString() : null
+                this.$route.params.id,
+                this.date_start != null ? this.date_start.toLocaleDateString('sv-SE') + ' ' +  this.date_start.toLocaleTimeString() : null,
+                this.date_end != null ? this.date_end.toLocaleDateString('sv-SE') + ' ' + this.date_end.toLocaleTimeString() : null
             ),
             eventapi.getAllEventTypes(),
             categoryapi.getAllCategoryTypes(),
-            propertyapi.getObjectProperties(this.objectId)
+            propertyapi.getObjectProperties(this.$route.params.id)
         ]);
         this.object = object.data;
         this.types = types.data;
@@ -100,6 +99,12 @@ export default {
   },
   mounted() {
     this.getObjectEvents();
-  }
+  },
+  created() {
+    this.$watch(
+        () => this.$route.params,
+        () => this.getObjectEvents()
+    );
+  },
 }
 </script>
