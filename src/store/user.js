@@ -46,7 +46,7 @@ export default {
             })
         },
 
-        onLogout({ commit }) {
+        onLogout({commit}) {
             localStorage.removeItem('token');
             localStorage.removeItem('username');
             localStorage.removeItem('user_role');

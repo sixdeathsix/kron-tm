@@ -26,7 +26,7 @@ $axios.interceptors.response.use(
     response => response,
     error => {
         if (error.response.status === 403) {
-            if(error.response.data.startsWith("JWT expired")) {
+            if (error.response.data.startsWith("JWT expired")) {
                 store.dispatch('onLogout');
             } else {
                 alert('У вас недостаточно прав');

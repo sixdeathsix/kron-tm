@@ -1,6 +1,7 @@
 import {$axios} from "./service";
 
 const url = 'event';
+
 class EventApi {
 
     getOneObjectEvents(id, date_start, date_end) {

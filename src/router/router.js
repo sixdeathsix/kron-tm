@@ -3,17 +3,17 @@ import {
     createWebHistory
 } from 'vue-router';
 
-import { store } from "../store/store";
+import {store} from "../store/store";
 
 let token = store.state.user.user.token;
 
-function authGuard(to, from ,next) {
-    if (token == null) next({ name: 'signin' })
+function authGuard(to, from, next) {
+    if (token == null) next({name: 'signin'})
     else next()
 }
 
-function noAuthGuard(to, from ,next) {
-    if (token != null) next({ name: 'monitoring' })
+function noAuthGuard(to, from, next) {
+    if (token != null) next({name: 'monitoring'})
     else next()
 }
 

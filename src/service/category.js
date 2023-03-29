@@ -1,6 +1,7 @@
 import {$axios} from "./service";
 
 const url = 'category';
+
 class CategoryApi {
 
     getAllCategoryTypes() {

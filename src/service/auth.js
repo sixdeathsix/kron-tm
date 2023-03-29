@@ -1,6 +1,7 @@
 import {$axios} from "./service";
 
 const url = 'auth';
+
 class AuthApi {
 
     login(userdata) {

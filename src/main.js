@@ -1,8 +1,8 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
 import PrimeVue from 'primevue/config';
-import { router } from "./router/router";
-import { store } from "./store/store";
+import {router} from "./router/router";
+import {store} from "./store/store";
 
 import '/node_modules/primevue/resources/primevue.min.css';
 import '/node_modules/primevue/resources/themes/lara-light-blue/theme.css';
