@@ -10,7 +10,7 @@ export default {
     mutations: {
         setObjects(state, objects) {
             state.objects = objects;
-        },
+        }
     },
     actions: {
         getObjects({commit}) {

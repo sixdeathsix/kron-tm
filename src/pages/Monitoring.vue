@@ -26,7 +26,7 @@ export default {
                 object_type: {value: null, matchMode: FilterMatchMode.IN}
             },
             array: [
-                {header: 'Объект', field: 'object_name', sortable: true, link: "object", param: 'object_id'},
+                {header: 'Объект', field: 'object_name', sortable: true, link: {name: "object", param: 'object_id'}},
                 {header: 'Тип', field: 'object_type', data: 'object_type', option: 'types'},
                 {header: '№ фл', field: 'flange_no', sortable: true},
                 {header: 'Описание', field: 'description', sortable: true},

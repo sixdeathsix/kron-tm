@@ -14,7 +14,7 @@
         <template v-for="arr in array">
             <Column :field="arr.field" :header="arr.header" :sortable="arr.sortable || false" v-if="!arr.data">
                 <template #body={data}>
-                    <router-link :to="{ name: arr.link, params: { id: data[arr.param] } }" v-if="arr.link">
+                    <router-link :to="{ name: arr.link.name, params: { id: data[arr.link.param] } }" v-if="arr.link">
                         {{ data[arr.field] }}
                     </router-link>
                     <p v-else>{{ data[arr.field] }}</p>
