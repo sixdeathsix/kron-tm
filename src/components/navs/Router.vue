@@ -31,7 +31,6 @@ export default {
   },
   methods: {
     redirect(e) {
-      console.log()
       if (e.value == null) {
         return this.$router.push({ name: 'monitoring' });
       }
