@@ -18,7 +18,7 @@ export default {
     props: ['coordinates'],
     data() {
         return {
-            controls: ['fullscreenControl', 'routePanelControl']
+            controls: ['fullscreenControl']
         }
     }
 }
