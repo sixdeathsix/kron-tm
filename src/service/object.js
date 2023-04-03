@@ -8,6 +8,10 @@ class ObjectApi {
         return $axios.get(url);
     }
 
+    getAllMonitoringObjects() {
+        return $axios.get(url + "/monitoring");
+    }
+
     getOneObject(id) {
         return $axios.get(url + "/" + id);
     }

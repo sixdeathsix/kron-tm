@@ -19,7 +19,7 @@ export default {
     components: {MyDataTable},
     data() {
         return {
-            objects: this.$store.state.object.objects,
+            objects: null,
             types: null,
             loading: true,
             filters: {
@@ -44,8 +44,14 @@ export default {
     methods: {
         async getAllTypes() {
             try {
-                let types = await objectapi.getAllObjectTypes();
+                let [objects, types] = await Promise.all([
+                    objectapi.getAllMonitoringObjects(),
+                    objectapi.getAllObjectTypes()
+                ]);
+
+                this.objects = objects.data;
                 this.types = types.data.map(a => a.object_type);
+
                 this.loading = false;
             } catch (e) {
                 this.$toast.add({severity: 'error', detail: 'Произошла ошибка', life: 3000});

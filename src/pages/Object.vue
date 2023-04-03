@@ -10,6 +10,7 @@
         -
         <Calendar v-model="date_end" showTime hourFormat="24"/>
         <Button type="submit" label="обновить" severity="secondary" icon="pi pi-sync"/>
+        <Button label="Показать на карте" @click="visible = true" />
     </form>
     <MyDataTable
         :array="eventColumns"
@@ -20,6 +21,9 @@
         filterDisplay="row"
         :options="{types: types, categories: categories, properties: properties}"
     />
+    <Dialog v-model:visible="visible" modal dismissableMask :style="{ width: '50vw' }">
+        <Map :coordinates="[objectEvents[0].loc_x, objectEvents[0].loc_y]" />
+    </Dialog>
 </template>
 
 <script>
@@ -28,9 +32,10 @@ import categoryapi from "../service/category";
 import propertyapi from "../service/property";
 import {FilterMatchMode} from "primevue/api";
 import MyDataTable from "../components/datatables/MyDataTable.vue";
+import Map from "../components/maps/Map.vue";
 
 export default {
-    components: {MyDataTable},
+    components: {Map, MyDataTable},
     data() {
         return {
             objectEvents: null,
@@ -41,6 +46,7 @@ export default {
             loading: true,
             date_start: null,
             date_end: null,
+            visible: false,
             filters: {
                 event_type: {value: null, matchMode: FilterMatchMode.IN},
                 category: {value: null, matchMode: FilterMatchMode.IN},
@@ -80,7 +86,7 @@ export default {
                     propertyapi.getObjectProperties(this.$route.params.id),
                     eventapi.getAllEventTypes(),
                     categoryapi.getAllCategoryTypes(),
-                    propertyapi.getAllPropertyTypes(),
+                    propertyapi.getAllPropertyTypes()
                 ]);
 
                 this.objectEvents = objectEvents.data;

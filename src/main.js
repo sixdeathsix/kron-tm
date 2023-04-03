@@ -3,6 +3,7 @@ import App from './App.vue'
 import PrimeVue from 'primevue/config';
 import {router} from "./router/router";
 import {store} from "./store/store";
+import YmapPlugin from 'vue-yandex-maps';
 
 import '/node_modules/primevue/resources/primevue.min.css';
 import '/node_modules/primevue/resources/themes/lara-light-blue/theme.css';
@@ -108,6 +109,14 @@ import VirtualScroller from 'primevue/virtualscroller';
 
 const app = createApp(App);
 
+const settings = {
+    apiKey: 'b4d253eb-7ae7-4989-9e3e-88fea65e0433',
+    lang: 'ru_RU',
+    coordorder: 'latlong',
+    debug: false,
+    version: '2.1'
+}
+
 app.use(router);
 app.use(store);
 app.use(PrimeVue);
@@ -115,6 +124,7 @@ app.use(ToastService);
 app.use(ConfirmationService);
 app.use(DialogService);
 app.use(router);
+app.use(YmapPlugin, settings);
 
 app.directive('tooltip', Tooltip);
 app.directive('badge', BadgeDirective);
