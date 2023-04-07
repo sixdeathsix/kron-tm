@@ -49,6 +49,15 @@ export default {
         'pagination',
         'filterDisplay'
     ],
+    // props: {
+    //     array: Array,
+    //     value: Array,
+    //     loading: Boolean,
+    //     filters: Object,
+    //     options: Object,
+    //     pagination: Boolean,
+    //     filterDisplay: String
+    // },
     data() {
         return {
             filters: this.filters

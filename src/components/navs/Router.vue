@@ -2,6 +2,10 @@
     <div class="router-container flex justify-content-between align-items-center">
         <div class="">
             <router-link class="router" :to="{name: 'monitoring'}">Мониторинг свойств</router-link>
+            <router-link class="router" :to="{name: 'events'}">События</router-link>
+            <router-link class="router" :to="{name: 'monitoring'}">Архив значений</router-link>
+            <router-link class="router" :to="{name: 'monitoring'}">Тренды</router-link>
+            <router-link class="router" :to="{name: 'monitoring'}">Все объекты</router-link>
         </div>
         <div class="">
             <Dropdown v-model="selectedObject" @change="redirect" :options="getObjects" showClear filter

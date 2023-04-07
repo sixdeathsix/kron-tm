@@ -7,9 +7,8 @@
 
         <div class="">
             <div class="flex align-items-center px-3">
-                <p class="font-medium text-xl px-3 border-right-2">{{ user.username }}</p>
-                <Button severity="secondary" @click="logout" class="mx-3" label="Выход" icon="pi pi-user" size="small"
-                        outlined/>
+                <p class="font-bold text-l px-2 text-primary">{{ user.username }}, </p>
+                <p class="font-bold text-l cursor-pointer" @click="logout">выход</p>
             </div>
         </div>
 
