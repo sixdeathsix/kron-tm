@@ -23,7 +23,7 @@ export default {
             }).catch((e) => {
                 this.$toast.add({
                     severity: 'error',
-                    detail: e.response.data === 'Bad credentials' ? 'Неверный логин или пароль' : e.response.data,
+                    detail: e.response.data,
                     life: 3000
                 });
             });

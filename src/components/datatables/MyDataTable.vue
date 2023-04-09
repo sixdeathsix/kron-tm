@@ -6,26 +6,40 @@
         :paginator="pagination"
         showGridlines
         :rows="10"
-        :filterDisplay="filterDisplay"
         :rowClass="rowClass"
+        filterDisplay="row"
     >
-        <template #empty>Ничего не найдено</template>
-        <template #loading>Идёт загрузка данных. Подождите немного.</template>
-        <template v-for="arr in array">
-            <Column :field="arr.field" :header="arr.header" :sortable="arr.sortable || false" v-if="!arr.data">
+        <template #empty>
+            <div class="flex w-12 justify-content-center align-items-center p-3 font-bold text-xl">
+                Ничего не найдено
+            </div>
+        </template>
+        <template #loading>
+            <div class="flex w-12 justify-content-center align-items-center p-3 font-bold text-xl">
+                Идёт загрузка данных.Подождите немного.
+            </div>
+        </template>
+
+        <template v-for="col in columns">
+            <Column :field="col.field" :header="col.header" :sortable="col.sortable || false" v-if="!col.data">
                 <template #body={data}>
-                    <router-link :to="{ name: arr.link.name, params: { id: data[arr.link.param] } }" v-if="arr.link">
-                        {{ data[arr.field] }}
+                    <router-link :to="{ name: col.link.name, params: { id: data[col.link.param] } }" v-if="col.link">
+                        {{ data[col.field] }}
                     </router-link>
-                    <p v-else>{{ data[arr.field] }}</p>
+                    <p v-else>{{ data[col.field] }}</p>
                 </template>
             </Column>
 
-            <Column :header="arr.header" :field="arr.field" :showFilterMenu="false" style="width: 10vw" v-if="arr.data">
+            <Column :header="col.header" :field="col.field" :showFilterMenu="false" style="width: 10vw" v-if="col.data">
                 <template #filter="{ filterModel, filterCallback }">
-                    <MultiSelect v-model="filterModel.value" @change="filterCallback()" :options="options[arr.option]"
-                                 :placeholder="arr.placeholder || arr.header" class="p-column-filter"
-                                 style="width: 10vw">
+                    <MultiSelect
+                        v-model="filterModel.value"
+                        @change="filterCallback()"
+                        :options="(getOptions[col.option] || []).map(opt => opt[col.field])"
+                        :placeholder="col.placeholder || col.header"
+                        class="p-column-filter"
+                        style="width: 10vw"
+                    >
                         <template #option="slotProps">
                             <span>{{ slotProps.option }}</span>
                         </template>
@@ -38,29 +52,28 @@
 
 <script>
 
+import {FilterMatchMode} from "primevue/api";
+import eventapi from "../../service/kron-tm-api-v1/event.js";
+import categoryapi from "../../service/kron-tm-api-v1/category.js";
+import propertyapi from "../../service/kron-tm-api-v1/property.js";
+import objectapi from "../../service/kron-tm-api-v1/object.js";
+
 export default {
     name: 'MyDataTable',
     props: [
-        'array',
+        'columns',
         'value',
         'loading',
-        'filters',
-        'options',
-        'pagination',
-        'filterDisplay'
+        'pagination'
     ],
-    // props: {
-    //     array: Array,
-    //     value: Array,
-    //     loading: Boolean,
-    //     filters: Object,
-    //     options: Object,
-    //     pagination: Boolean,
-    //     filterDisplay: String
-    // },
     data() {
         return {
-            filters: this.filters
+            filters: {
+                object_type: {value: null, matchMode: FilterMatchMode.IN},
+                event_type: {value: null, matchMode: FilterMatchMode.IN},
+                category: {value: null, matchMode: FilterMatchMode.IN},
+                property_type: {value: null, matchMode: FilterMatchMode.IN}
+            }
         }
     },
     methods: {
@@ -70,6 +83,11 @@ export default {
                 {'bg-yellow-200': data['event_type'] === 'Нулевой дебит' || data['event_type'] === 'Отсутствует связь'}
             ];
         }
+    },
+    computed: {
+        getOptions() {
+            return this.$store.state.object.options;
+        },
     }
 }
 </script>

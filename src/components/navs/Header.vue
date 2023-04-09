@@ -1,6 +1,5 @@
 <template>
     <div class="flex justify-content-between align-items-center p-4">
-
         <div class="">
             <h3>Система КРОН-ТМ</h3>
         </div>
@@ -11,7 +10,6 @@
                 <p class="font-bold text-l cursor-pointer" @click="logout">выход</p>
             </div>
         </div>
-
     </div>
 </template>
 

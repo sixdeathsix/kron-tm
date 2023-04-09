@@ -1,18 +1,14 @@
 <template>
     <MyDataTable
-        :array="array"
+        :columns="objectColumns"
         :value="objects"
         :loading="loading"
-        :filters="filters"
         :pagination="true"
-        filterDisplay="row"
-        :options="{types: types}"
     />
 </template>
 
 <script>
-import objectapi from "../service/object";
-import {FilterMatchMode} from "primevue/api";
+import objectapi from "../service/kron-tm-api-v1/object.js";
 import MyDataTable from "../components/datatables/MyDataTable.vue";
 
 export default {
@@ -20,12 +16,8 @@ export default {
     data() {
         return {
             objects: null,
-            types: null,
             loading: true,
-            filters: {
-                object_type: {value: null, matchMode: FilterMatchMode.IN}
-            },
-            array: [
+            objectColumns: [
                 {header: 'Объект', field: 'object_name', sortable: true, link: {name: "object", param: 'object_id'}},
                 {header: 'Тип', field: 'object_type', data: 'object_type', option: 'types'},
                 {header: '№ фл', field: 'flange_no', sortable: true},
@@ -42,24 +34,17 @@ export default {
         }
     },
     methods: {
-        async getAllTypes() {
-            try {
-                let [objects, types] = await Promise.all([
-                    objectapi.getAllMonitoringObjects(),
-                    objectapi.getAllObjectTypes()
-                ]);
-
-                this.objects = objects.data;
-                this.types = types.data.map(a => a.object_type);
-
+        getMonitoring() {
+            objectapi.getAllMonitoringObjects().then(res => {
+                this.objects = res.data;
                 this.loading = false;
-            } catch (e) {
+            }).catch(e => {
                 this.$toast.add({severity: 'error', detail: 'Произошла ошибка', life: 3000});
-            }
-        },
+            });
+        }
     },
     mounted() {
-        this.getAllTypes();
+        this.getMonitoring();
     }
 }
 </script>

@@ -5,8 +5,7 @@
         <InputText placeholder="Имя" type="text" class="w-full mb-3" v-model="name" required/>
         <InputText placeholder="Отчество" type="text" class="w-full mb-3" v-model="patronymic" required/>
         <InputText placeholder="Электронный адрес" type="email" class="w-full mb-3" v-model="email" required/>
-        <InputMask placeholder="Номер телефона" date="phone" class="w-full mb-3" mask="+7 (999) 999-99-99"
-                   v-model="phone" required/>
+        <InputMask placeholder="Номер телефона" date="phone" class="w-full mb-3" mask="+7 (999) 999-99-99" v-model="phone" required/>
         <InputText placeholder="Имя пользователя" type="text" class="w-full mb-3" v-model="login" required/>
         <InputText placeholder="Пароль" type="password" class="w-full mb-3" v-model="password" minlength="6" required/>
         <InputText placeholder="Подтвердите пароль" type="password" class="w-full mb-3" v-model="password_confirm"
@@ -45,7 +44,7 @@ export default {
                 }).catch((e) => {
                     this.$toast.add({
                         severity: 'error',
-                        detail: e.response.data === 'Пользователь уже зарегистрирован' ? e.response.data : 'Произошла ошибка',
+                        detail: e.response.data,
                         life: 3000
                     });
                 });

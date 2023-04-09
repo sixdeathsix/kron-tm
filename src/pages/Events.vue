@@ -1,79 +1,57 @@
 <template>
-    <form class="flex w-12 justify-content-center align-items-center p-3 gap-2" @submit.prevent="getEvents">
-        <p>Период:</p>
-        <Calendar v-model="date" />
-        <Button type="submit" label="обновить" severity="secondary" icon="pi pi-sync"/>
-    </form>
+    <DateRangeFilter @date="getEvents" />
     <MyDataTable
-        :array="eventColumns"
+        :columns="eventColumns"
         :value="events"
         :loading="loading"
-        :filters="filters"
         :pagination="true"
-        filterDisplay="row"
-        :options="{types: types, categories: categories, properties: properties}"
     />
 </template>
 
 <script>
 import MyDataTable from "../components/datatables/MyDataTable.vue";
-import eventapi from "../service/event.js";
-import propertyapi from "../service/property.js";
-import categoryapi from "../service/category.js";
-import {FilterMatchMode} from "primevue/api";
+import eventapi from "../service/kron-tm-api-v1/event.js";
+import DateRangeFilter from "../components/range/DateRangeFilter.vue";
 
 export default {
     name: "Events",
-    components: {MyDataTable},
+    components: {DateRangeFilter, MyDataTable},
     data() {
         return {
             events: null,
-            types: null,
-            categories: null,
-            properties: null,
             loading: true,
-            date: null,
-            filters: {
-                event_type: {value: null, matchMode: FilterMatchMode.IN},
-                category: {value: null, matchMode: FilterMatchMode.IN},
-                property_type: {value: null, matchMode: FilterMatchMode.IN}
-            },
             eventColumns: [
                 {header: 'Объект', field: 'object_name'},
                 {header: '№ фл', field: 'flange_no'},
-                {header: 'Событие', field: 'event_type', data: 'event_type', option: 'types'},
+                {header: 'Событие', field: 'event_type', data: 'event_type', option: 'events'},
                 {header: 'Категория', field: 'category', data: 'category', option: 'categories'},
                 {header: 'Дата события', field: 'event_date', sortable: true},
                 {header: 'Свойство', field: 'property_type', data: 'property_type', option: 'properties'},
                 {header: 'Значение', field: 'value'}
-            ],
-
+            ]
         }
     },
     methods: {
-        async getEvents() {
-            try {
-                this.loading = true;
-
-                let [events, types, categories, properties] = await Promise.all([
-                    eventapi.getAllEvents(
-                        this.date != null ? this.date.toLocaleDateString('sv-SE') : null
-                    ),
-                    eventapi.getAllEventTypes(),
-                    categoryapi.getAllCategoryTypes(),
-                    propertyapi.getAllPropertyTypes()
-                ]);
-
-                this.events = events.data;
-                this.types = types.data.map(a => a.event_type);
-                this.categories = categories.data.map(a => a.category);
-                this.properties = properties.data.map(a => a.property_type);
-
+        getEvents(start, end) {
+            this.loading = true;
+            eventapi.getAllEvents(this.getSelectedObject && this.getSelectedObject.object_id || '', start || null, end || null).then(res => {
+                this.events = res.data;
                 this.loading = false;
-            } catch (e) {
+            }).catch(e => {
                 this.$toast.add({severity: 'error', detail: 'Произошла ошибка', life: 3000});
-            }
-        },
+            });
+        }
+    },
+    computed: {
+        getSelectedObject() {
+            return this.$store.state.object.selectedObject;
+        }
+    },
+    created() {
+        this.$watch(
+            () => this.getSelectedObject,
+            () => this.getEvents()
+        );
     },
     mounted() {
         this.getEvents();

@@ -3,54 +3,63 @@
         <div class="">
             <router-link class="router" :to="{name: 'monitoring'}">Мониторинг свойств</router-link>
             <router-link class="router" :to="{name: 'events'}">События</router-link>
-            <router-link class="router" :to="{name: 'monitoring'}">Архив значений</router-link>
-            <router-link class="router" :to="{name: 'monitoring'}">Тренды</router-link>
-            <router-link class="router" :to="{name: 'monitoring'}">Все объекты</router-link>
+            <Dropdown v-model="selectedLink" :options="links" optionLabel="name" placeholder="Архив значений" class="border-none" />
         </div>
-        <div class="">
-            <Dropdown v-model="selectedObject" @change="redirect" :options="getObjects" showClear filter
-                      optionLabel="object_name" placeholder="Все объекты" class="md:w-14rem">
-                <template #value="slotProps">
-                    <div v-if="slotProps.value" class="flex align-items-center">
-                        <div>{{ slotProps.value.object_name }}</div>
-                    </div>
-                    <span v-else>
-            {{ slotProps.placeholder }}
-        </span>
-                </template>
-                <template #option="slotProps">
-                    <div class="flex align-items-center">
-                        <div>{{ slotProps.option.object_name }}</div>
-                    </div>
-                </template>
-            </Dropdown>
-        </div>
+        <Dropdown v-model="getSelectedObject" @change="redirect" :options="getObjects" showClear filter optionLabel="object_name" placeholder="Все объекты" />
     </div>
 </template>
 
 <script>
+
 export default {
     name: "Router",
     data() {
         return {
-            selectedObject: null
+            selectedLink: null,
+            links: [
+                {name: 'Шахматка жидкости', to: ''},
+                {name: '2-х часовки жидкости', to: ''}
+            ]
         }
     },
     methods: {
         redirect(e) {
-            if (e.value == null) {
-                return this.$router.push({name: 'monitoring'});
+            if (e.value === null && this.$route.fullPath.startsWith('/object')) {
+                this.$router.push({name: 'monitoring'});
             }
-            this.$router.push({name: 'object', params: {id: e.value.object_id}});
+
+            if (this.$route.fullPath.startsWith('/object') || this.$route.fullPath === '/') {
+                this.$router.push({name: 'object', params: {id: e.value.object_id}});
+            }
+
+            this.$store.commit('setSelectedObject', e.value);
+        },
+        checkRoute() {
+            if (this.$route.fullPath === '/') {
+                return this.$store.commit('setSelectedObject', null);
+            }
+
+            if (this.$route.fullPath.startsWith('/object')) {
+                return this.$store.commit('setSelectedObject', this.getObjects.filter(obj => obj.object_id == this.$route.params.id)[0]);
+            }
         }
-    },
-    mounted() {
-        this.$store.dispatch('getObjects');
     },
     computed: {
         getObjects() {
-            return this.$store.state.object.objects
+            return this.$store.state.object.objects;
+        },
+        getSelectedObject() {
+            return this.$store.state.object.selectedObject;
         }
+    },
+    created() {
+        this.$watch(
+            () => this.$route,
+            () => this.checkRoute()
+        );
+    },
+    mounted() {
+        this.$store.dispatch('getObjects');
     }
 }
 </script>

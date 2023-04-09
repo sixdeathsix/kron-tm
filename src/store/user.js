@@ -1,4 +1,4 @@
-import authapi from "../service/auth";
+import authapi from "../service/kron-tm-api-v1/auth.js";
 
 export default {
     state() {
@@ -43,7 +43,7 @@ export default {
                 commit('setUsername', res.data.username);
                 commit('setUserRole', res.data.role);
                 location.reload();
-            })
+            });
         },
 
         onLogout() {

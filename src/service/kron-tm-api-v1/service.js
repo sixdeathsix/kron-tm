@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {store} from "../store/store.js";
+import {store} from "../../store/store.js";
 
 const url = "http://localhost:8080/api/v1/";
 
@@ -15,7 +15,7 @@ export const $axios = axios.create({
 $axios.interceptors.request.use(
     response => {
         if (localStorage.getItem('token')) {
-            response.headers['authorization'] = `Bearer ${localStorage.getItem('token')}`;
+            response.headers['authorization'] = `Bearer ${store.state.user.user.token}`;
         }
         return response;
     },

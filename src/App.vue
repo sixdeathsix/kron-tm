@@ -19,6 +19,25 @@ export default {
             token: this.$store.state.user.user.token
         }
     },
+    methods: {
+        async getOptions() {
+            if (this.$store.state.user.user.token) {
+                try {
+                    await Promise.all([
+                        this.$store.dispatch('getTypes'),
+                        this.$store.dispatch('getEvents'),
+                        this.$store.dispatch('getCategories'),
+                        this.$store.dispatch('getProperties')
+                    ]);
+                } catch (e) {
+                    this.$toast.add({severity: 'error', detail: 'Произошла ошибка', life: 3000});
+                }
+            }
+        }
+    },
+    mounted() {
+        this.getOptions();
+    }
 }
 </script>
 

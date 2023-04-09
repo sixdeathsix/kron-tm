@@ -1,4 +1,4 @@
-import {$axios} from "./service";
+import {$axios} from "./service.js";
 
 const url = 'object';
 

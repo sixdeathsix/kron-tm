@@ -1,11 +1,11 @@
-import {$axios} from "./service";
+import {$axios} from "./service.js";
 
 const url = 'event';
 
 class EventApi {
 
-    getAllEvents(date) {
-        return $axios.get(url + `?date=${date}`);
+    getAllEvents(id, date_start, date_end) {
+        return $axios.get(url + `?id=${id}&date_start=${date_start}&date_end=${date_end}`);
     }
 
     getOneObjectEvents(id, date_start, date_end) {
