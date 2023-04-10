@@ -1,13 +1,14 @@
 <template>
     <DataTable
-        :value="value"
-        :loading="loading"
-        v-model:filters="filters"
-        :paginator="pagination"
-        showGridlines
-        :rows="10"
-        :rowClass="rowClass"
-        filterDisplay="row"
+            :value="value"
+            :loading="loading"
+            v-model:filters="filters"
+            :paginator="pagination"
+            showGridlines
+            :rows="10"
+            :rowClass="rowClass"
+            filterDisplay="row"
+            @row-dblclick="dblclick"
     >
         <template #empty>
             <div class="flex w-12 justify-content-center align-items-center p-3 font-bold text-xl">
@@ -18,6 +19,11 @@
             <div class="flex w-12 justify-content-center align-items-center p-3 font-bold text-xl">
                 Идёт загрузка данных.Подождите немного.
             </div>
+        </template>
+        <template #paginatorstart v-if="paginatorend">
+        </template>
+        <template #paginatorend v-if="paginatorend">
+            <Button type="button" @click="paginatorendFunc" icon="pi pi-plus" severity="success" autofocus />
         </template>
 
         <template v-for="col in columns">
@@ -33,12 +39,12 @@
             <Column :header="col.header" :field="col.field" :showFilterMenu="false" style="width: 10vw" v-if="col.data">
                 <template #filter="{ filterModel, filterCallback }">
                     <MultiSelect
-                        v-model="filterModel.value"
-                        @change="filterCallback()"
-                        :options="(getOptions[col.option] || []).map(opt => opt[col.field])"
-                        :placeholder="col.placeholder || col.header"
-                        class="p-column-filter"
-                        style="width: 10vw"
+                            v-model="filterModel.value"
+                            @change="filterCallback()"
+                            :options="(getOptions[col.option] || []).map(opt => opt[col.field])"
+                            :placeholder="col.placeholder || col.header"
+                            class="p-column-filter"
+                            style="width: 10vw"
                     >
                         <template #option="slotProps">
                             <span>{{ slotProps.option }}</span>
@@ -64,7 +70,10 @@ export default {
         'columns',
         'value',
         'loading',
-        'pagination'
+        'pagination',
+        'dblclick',
+        'paginatorend',
+        'paginatorendFunc'
     ],
     data() {
         return {
@@ -77,6 +86,9 @@ export default {
         }
     },
     methods: {
+        log() {
+            console.log(123)
+        },
         rowClass(data) {
             return [
                 {'bg-green-300': data['event_type'] === 'Замер положителен'},

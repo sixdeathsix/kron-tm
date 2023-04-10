@@ -17,7 +17,11 @@ class ObjectApi {
     }
 
     getAllObjectTypes() {
-        return $axios.get(url + '/types');
+        return $axios.get(url + "/types");
+    }
+
+    createObject(objectdata) {
+        return $axios.post(url, objectdata)
     }
 
 }

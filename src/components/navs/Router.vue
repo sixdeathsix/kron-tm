@@ -4,6 +4,8 @@
             <router-link class="router" :to="{name: 'monitoring'}">Мониторинг свойств</router-link>
             <router-link class="router" :to="{name: 'events'}">События</router-link>
             <Dropdown v-model="selectedLink" @change="archiveRoute" :options="links" optionLabel="name" placeholder="Архив значений" class="border-none" />
+            <router-link class="router" :to="{name: 'trends'}">Тренды</router-link>
+            <router-link class="router" :to="{name: 'objects'}" v-if="user.user_role == 'ROLE_ADMIN'">Все объекты</router-link>
         </div>
         <Dropdown v-model="getSelectedObject" @change="redirect" :options="getObjects" showClear filter optionLabel="object_name" placeholder="Все объекты" />
     </div>
@@ -15,6 +17,7 @@ export default {
     name: "Router",
     data() {
         return {
+            user: this.$store.state.user.user,
             selectedLink: null,
             links: [
                 {name: 'Шахматка жидкости', to: 'checkerboard'},

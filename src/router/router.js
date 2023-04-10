@@ -5,15 +5,20 @@ import {
 
 import {store} from "../store/store";
 
-let token = store.state.user.user.token;
+let token = store.state.user.user;
 
 function authGuard(to, from, next) {
-    if (token == null) next({name: 'signin'})
+    if (token.token == null) next({name: 'signin'})
     else next()
 }
 
 function noAuthGuard(to, from, next) {
-    if (token != null) next({name: 'monitoring'})
+    if (token.token != null) next({name: 'signin'})
+    else next()
+}
+
+function adminGuard(to, from, next) {
+    if (token.user_role !== 'ROLE_ADMIN') next({name: 'signin'})
     else next()
 }
 
@@ -63,6 +68,18 @@ const routes = [
         name: "twohours",
         component: () => import("../pages/Twohours.vue"),
         beforeEnter: authGuard
+    },
+    {
+        path: "/trends",
+        name: "trends",
+        component: () => import("../pages/Trends.vue"),
+        beforeEnter: authGuard
+    },
+    {
+        path: "/objects",
+        name: "objects",
+        component: () => import("../pages/Objects.vue"),
+        beforeEnter: adminGuard
     }
 ];
 
