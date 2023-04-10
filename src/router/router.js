@@ -51,6 +51,18 @@ const routes = [
         name: "events",
         component: () => import("../pages/Events.vue"),
         beforeEnter: authGuard
+    },
+    {
+        path: "/checkerboard",
+        name: "checkerboard",
+        component: () => import("../pages/Сheckerboard.vue"),
+        beforeEnter: authGuard
+    },
+    {
+        path: "/twohours",
+        name: "twohours",
+        component: () => import("../pages/Twohours.vue"),
+        beforeEnter: authGuard
     }
 ];
 

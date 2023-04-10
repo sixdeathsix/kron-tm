@@ -16,6 +16,10 @@ class EventApi {
         return $axios.get(url + '/types');
     }
 
+    getTwohours(id, date) {
+        return $axios.get(url + '/twohours' +`?id=${id}&date=${date}`);
+    }
+
 }
 
 export default new EventApi();

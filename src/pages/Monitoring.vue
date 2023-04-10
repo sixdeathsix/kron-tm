@@ -23,7 +23,7 @@ export default {
                 {header: '№ фл', field: 'flange_no', sortable: true},
                 {header: 'Описание', field: 'description', sortable: true},
                 {header: 'Накоп пред сут', field: '', sortable: true},
-                {header: 'Накоп тек сут', field: ''},
+                {header: 'Накоп тек сут', field: 'value'},
                 {header: 'Qреж м3/сут', field: ''},
                 {header: 'Qсут м3/сут', field: ''},
                 {header: 'Отк от режима, м3', field: ''},

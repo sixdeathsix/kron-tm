@@ -3,7 +3,7 @@
         <div class="">
             <router-link class="router" :to="{name: 'monitoring'}">Мониторинг свойств</router-link>
             <router-link class="router" :to="{name: 'events'}">События</router-link>
-            <Dropdown v-model="selectedLink" :options="links" optionLabel="name" placeholder="Архив значений" class="border-none" />
+            <Dropdown v-model="selectedLink" @change="archiveRoute" :options="links" optionLabel="name" placeholder="Архив значений" class="border-none" />
         </div>
         <Dropdown v-model="getSelectedObject" @change="redirect" :options="getObjects" showClear filter optionLabel="object_name" placeholder="Все объекты" />
     </div>
@@ -17,8 +17,8 @@ export default {
         return {
             selectedLink: null,
             links: [
-                {name: 'Шахматка жидкости', to: ''},
-                {name: '2-х часовки жидкости', to: ''}
+                {name: 'Шахматка жидкости', to: 'checkerboard'},
+                {name: '2-х часовки жидкости', to: 'twohours'}
             ]
         }
     },
@@ -42,6 +42,9 @@ export default {
             if (this.$route.fullPath.startsWith('/object')) {
                 return this.$store.commit('setSelectedObject', this.getObjects.filter(obj => obj.object_id == this.$route.params.id)[0]);
             }
+        },
+        archiveRoute(e) {
+            this.$router.push({name: e.value.to});
         }
     },
     computed: {
