@@ -24,6 +24,10 @@ class ObjectApi {
         return $axios.post(url, objectdata)
     }
 
+    deleteObject(object_id) {
+        return $axios.delete(url + `?object_id=${object_id}`)
+    }
+
 }
 
 export default new ObjectApi();
