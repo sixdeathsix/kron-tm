@@ -13,7 +13,7 @@ function authGuard(to, from, next) {
 }
 
 function noAuthGuard(to, from, next) {
-    if (token.token != null) next({name: 'signin'})
+    if (token.token != null) next({name: 'monitoring'})
     else next()
 }
 
