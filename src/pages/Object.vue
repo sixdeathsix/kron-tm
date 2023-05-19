@@ -3,6 +3,7 @@
         :columns="propertyColumns"
         :value="objectProperties"
         :loading="loading"
+        :empty="empty"
     />
     <div class="flex justify-content-center align-items-center">
         <DateRangeFilter @date="getObjectEvents" />
@@ -33,6 +34,7 @@ export default {
             objectEvents: null,
             objectProperties: null,
             loading: true,
+            empty: false,
             visible: false,
             eventColumns: [
                 {header: 'Объект', field: 'object_name'},
@@ -71,6 +73,8 @@ export default {
 
                 this.loading = false;
             } catch (e) {
+                this.loading = false;
+                this.empty = true;
                 this.$toast.add({severity: 'error', detail: 'Произошла ошибка', life: 3000});
             }
         },

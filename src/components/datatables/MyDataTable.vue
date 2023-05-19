@@ -2,6 +2,7 @@
     <DataTable
             :value="value"
             :loading="loading"
+            :empty="empty"
             v-model:filters="filters"
             :paginator="pagination"
             showGridlines
@@ -70,6 +71,7 @@ export default {
         'columns',
         'value',
         'loading',
+        'empty',
         'pagination',
         'dblclick',
         'paginatorend',
