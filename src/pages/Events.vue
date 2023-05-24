@@ -5,6 +5,9 @@
         :value="events"
         :loading="loading"
         :pagination="true"
+        :headers="headers"
+        icon="pi pi-file-excel"
+        xlsxname="События"
     />
 </template>
 
@@ -20,6 +23,7 @@ export default {
         return {
             events: null,
             loading: true,
+            headers: ["Объект", "Номер фланца", "Событие", "Категория", "Дата события", "Свойство", "Значение", "x", "y"],
             eventColumns: [
                 {header: 'Объект', field: 'object_name'},
                 {header: '№ фл', field: 'flange_no'},

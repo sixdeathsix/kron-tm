@@ -9,6 +9,7 @@
             :value="object"
             :loading="loading"
             class="w-4"
+            filterDisplay="none"
         />
         <ChartTypeBar :object="object" labels="event_date" label="Количество жидкости" data="value" class="h-30rem w-8 px-5"/>
     </div>

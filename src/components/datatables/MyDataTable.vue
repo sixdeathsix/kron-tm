@@ -6,6 +6,7 @@
             v-model:filters="filters"
             :paginator="pagination"
             showGridlines
+            removableSort
             :rows="10"
             :rowClass="rowClass"
             filterDisplay="row"
@@ -16,15 +17,22 @@
                 Ничего не найдено
             </div>
         </template>
+
         <template #loading>
             <div class="flex w-12 justify-content-center align-items-center p-3 font-bold text-xl">
                 Идёт загрузка данных.Подождите немного.
             </div>
         </template>
-        <template #paginatorstart v-if="paginatorend">
+
+        <template #paginatorstart v-if="paginatorFunc || xlsxname">
         </template>
-        <template #paginatorend v-if="paginatorend">
-            <Button type="button" @click="paginatorendFunc" icon="pi pi-plus" severity="success" autofocus />
+
+        <template #paginatorend v-if="paginatorFunc">
+            <Button type="button" @click="paginatorFunc" :icon="icon" :severity="severity || 'success'" autofocus />
+        </template>
+
+        <template #paginatorend v-if="xlsxname && headers">
+            <Button type="button" @click="dwn" :icon="icon" :severity="severity || 'success'" autofocus />
         </template>
 
         <template v-for="col in columns">
@@ -64,6 +72,7 @@ import eventapi from "../../service/kron-tm-api-v1/event.js";
 import categoryapi from "../../service/kron-tm-api-v1/category.js";
 import propertyapi from "../../service/kron-tm-api-v1/property.js";
 import objectapi from "../../service/kron-tm-api-v1/object.js";
+import * as XLSX from "xlsx";
 
 export default {
     name: 'MyDataTable',
@@ -74,8 +83,11 @@ export default {
         'empty',
         'pagination',
         'dblclick',
-        'paginatorend',
-        'paginatorendFunc'
+        'paginatorFunc',
+        'icon',
+        'severity',
+        'headers',
+        'xlsxname'
     ],
     data() {
         return {
@@ -88,14 +100,23 @@ export default {
         }
     },
     methods: {
-        log() {
-            console.log(123)
-        },
         rowClass(data) {
             return [
                 {'bg-green-300': data['event_type'] === 'Замер положителен'},
                 {'bg-yellow-200': data['event_type'] === 'Нулевой дебит' || data['event_type'] === 'Отсутствует связь'}
             ];
+        },
+        dwn() {
+            const headers = this.headers;
+            const worksheet = XLSX.utils.json_to_sheet(this.value);
+            const workbook  = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Лист1');
+            XLSX.utils.sheet_add_aoa(worksheet, [headers], { origin: 'A1'});
+            worksheet["!cols"] = [];
+            for (let i = 0; i < this.headers.length; i++) {
+                worksheet["!cols"].push({wch: this.headers[i].length + 5});
+            }
+            XLSX.writeFile(workbook ,`${this.xlsxname}.xlsx`)
         }
     },
     computed: {

@@ -4,6 +4,7 @@
         :value="objectProperties"
         :loading="loading"
         :empty="empty"
+        filterDisplay="none"
     />
     <div class="flex justify-content-center align-items-center">
         <DateRangeFilter @date="getObjectEvents" />
@@ -14,6 +15,9 @@
         :value="objectEvents"
         :loading="loading"
         :pagination="true"
+        :headers="headers"
+        icon="pi pi-file-excel"
+        :xlsxname="getSelectedObject.object_name + ' ' + new Date(Date.now()).toLocaleDateString()"
     />
     <Dialog v-model:visible="visible" modal dismissableMask :style="{ width: '50vw' }">
         <Map :coordinates="[objectEvents[0].loc_x, objectEvents[0].loc_y]" />
@@ -36,6 +40,7 @@ export default {
             loading: true,
             empty: false,
             visible: false,
+            headers: ["Объект", "Номер фланца", "Событие", "Категория", "Дата события", "Свойство", "Значение", "x", "y"],
             eventColumns: [
                 {header: 'Объект', field: 'object_name'},
                 {header: '№ фл', field: 'flange_no'},
@@ -52,7 +57,7 @@ export default {
                 {header: 'Значение', field: 'value'},
                 {header: 'Единица измерения', field: 'value_type'},
                 {header: 'Дата обновления', field: 'event_date'},
-                {header: 'Событие', field: 'event_type'},
+                {header: 'Событие', field: 'event_type'}
             ]
         }
     },

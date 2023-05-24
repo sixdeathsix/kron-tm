@@ -55,4 +55,16 @@ export default {
     max-width: 1600px;
     margin: 0 auto;
 }
+
+@media screen and (max-width: 1600px) {
+    .container {
+        padding: 0 50px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .container {
+        padding: 0;
+    }
+}
 </style>

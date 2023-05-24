@@ -4,6 +4,9 @@
         :value="objects"
         :loading="loading"
         :pagination="true"
+        :headers="headers"
+        icon="pi pi-file-excel"
+        :xlsxname="'Мониторинг за' + ' ' + new Date(Date.now()).toLocaleDateString()"
     />
 </template>
 
@@ -17,6 +20,7 @@ export default {
         return {
             objects: null,
             loading: true,
+            headers: ["Номер объекта", "Объект", "Тип объекта", "Номер фланца", "Описание", "Событие", "Дата события", "Текущие сутки","Пред сутки"],
             objectColumns: [
                 {header: 'Объект', field: 'object_name', sortable: true, link: {name: "object", param: 'object_id'}},
                 {header: 'Тип', field: 'object_type', data: 'object_type', option: 'types'},

@@ -12,6 +12,18 @@ class PropertyApi {
         return $axios.get(url + '/types');
     }
 
+    getAllValues() {
+        return $axios.get(url + '/values');
+    }
+
+    addPropertyForObject(postdata) {
+        return $axios.post(url, postdata);
+    }
+
+    deleteObjectProperty(property_id) {
+        return $axios.delete(url + `?property_id=${property_id}`)
+    }
+
 }
 
 export default new PropertyApi();
