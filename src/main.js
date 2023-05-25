@@ -154,7 +154,7 @@ app.use(PrimeVue, {
         today: 'Сегодня',
         weekHeader: 'Wk',
         firstDayOfWeek: 0,
-        dateFormat: 'mm/dd/yy',
+        dateFormat: 'dd/mm/yy',
         weak: 'Неделя',
         medium: 'Medium',
         strong: 'Strong',
