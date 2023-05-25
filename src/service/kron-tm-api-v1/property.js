@@ -16,7 +16,7 @@ class PropertyApi {
         return $axios.get(url + '/values');
     }
 
-    addPropertyForObject(postdata) {
+    createPropertyForObject(postdata) {
         return $axios.post(url, postdata);
     }
 

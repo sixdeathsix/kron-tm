@@ -5,7 +5,7 @@
         zoom="13"
         :controls="controls"
     >
-        <YandexMarker :coordinates="coordinates" marker-id="1" />
+        <YandexMarker :coordinates="coordinates" marker-id="1"/>
     </YandexMap>
 </template>
 

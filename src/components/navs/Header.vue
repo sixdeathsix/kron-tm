@@ -1,14 +1,10 @@
 <template>
     <div class="flex justify-content-between align-items-center p-4">
-        <div class="">
-            <h3>Система КРОН-ТМ</h3>
-        </div>
+        <h3>Система КРОН-ТМ</h3>
 
-        <div class="">
-            <div class="flex align-items-center px-3">
-                <p class="font-bold text-l px-2 text-primary">{{ user.username }}, </p>
-                <p class="font-bold text-l cursor-pointer" @click="logout">выход</p>
-            </div>
+        <div class="flex align-items-center px-3">
+            <p class="font-bold text-l px-2 text-primary">{{ user.username }}, </p>
+            <p class="font-bold text-l cursor-pointer" @click="logout">выход</p>
         </div>
     </div>
 </template>

@@ -36,11 +36,11 @@ export default {
         }
     },
     methods: {
-        getData(date) {
+        async getData(date) {
             if (this.getSelectedObject == null) return;
 
             this.loading = true;
-            eventapi.getCheckerboard(this.getSelectedObject.object_id, date).then(res => {
+            await eventapi.getCheckerboard(this.getSelectedObject.object_id, date).then(res => {
                 this.object = res.data;
                 this.loading = false;
             }).catch(e => {

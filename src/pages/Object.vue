@@ -6,10 +6,12 @@
         :empty="empty"
         filterDisplay="none"
     />
+
     <div class="flex justify-content-center align-items-center">
-        <DateRangeFilter @date="getObjectEvents" />
-        <Button label="Показать на карте" @click="visible = true" />
+        <DateRangeFilter @date="getObjectEvents"/>
+        <Button label="Показать на карте" @click="visible = true"/>
     </div>
+
     <MyDataTable
         :columns="eventColumns"
         :value="objectEvents"
@@ -19,8 +21,9 @@
         icon="pi pi-file-excel"
         :xlsxname="getSelectedObject.object_name + ' ' + new Date(Date.now()).toLocaleDateString()"
     />
+
     <Dialog v-model:visible="visible" modal dismissableMask :style="{ width: '50vw' }">
-        <Map :coordinates="[objectEvents[0].loc_x, objectEvents[0].loc_y]" />
+        <Map :coordinates="[objectEvents[0].loc_x, objectEvents[0].loc_y]"/>
     </Dialog>
 </template>
 

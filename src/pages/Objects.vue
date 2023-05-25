@@ -12,30 +12,32 @@
     <Dialog v-model:visible="objectDialog" :header="header" modal class="p-fluid w-10 lg:w-8 xl:w-6">
         <div class="field">
             <label>Название объекта</label>
-            <InputText v-model="selectedObject.object_name" required />
+            <InputText v-model="selectedObject.object_name" required/>
         </div>
         <div class="field">
             <label>Номер фланца</label>
-            <InputText v-model="selectedObject.flange_no" required />
+            <InputText v-model="selectedObject.flange_no" required/>
         </div>
         <div class="field" v-if="!selectedObject.object_type">
             <label class="mb-3">Тип объекта</label>
-            <Dropdown v-model="selectedObject.objectType" :options="getObjectTypes" showClear optionLabel="object_type" placeholder="Выберите тип объекта" />
+            <Dropdown v-model="selectedObject.objectType" :options="getObjectTypes" showClear optionLabel="object_type"
+                      placeholder="Выберите тип объекта"/>
         </div>
         <div class="field">
             <label>Описание</label>
-            <Textarea v-model="selectedObject.description" required rows="3" cols="20" />
+            <Textarea v-model="selectedObject.description" required rows="3" cols="20"/>
         </div>
         <div class="formgrid grid">
             <div class="field col">
                 <label>Координата Х</label>
-                <InputText type="number" v-model="selectedObject.loc_x" required />
+                <InputText type="number" v-model="selectedObject.loc_x" required/>
             </div>
             <div class="field col">
                 <label>Координата У</label>
-                <InputText type="number" v-model="selectedObject.loc_y" required />
+                <InputText type="number" v-model="selectedObject.loc_y" required/>
             </div>
         </div>
+
         <MyDataTable
             :columns="propertyColumns"
             :value="selectedObject.objectProperties"
@@ -47,14 +49,28 @@
             v-if="selectedObject.object_type"
             class="field"
         />
-        <Button label="Добавить свойство" severity="success" @click="openPropertyDialog" v-if="selectedObject.object_type" />
+
+        <Button
+            label="Добавить свойство"
+            severity="success"
+            @click="openPropertyDialog"
+            v-if="selectedObject.object_type"
+        />
+
         <template #footer>
             <div class="flex justify-content-between">
-                <Button label="Удалить" icon="pi pi-trash" text severity="danger" @click="deleteObject" v-if="selectedObject.object_type" />
+                <Button
+                    label="Удалить"
+                    icon="pi pi-trash"
+                    text
+                    severity="danger"
+                    @click="deleteObject"
+                    v-if="selectedObject.object_type"
+                />
                 <div v-else></div>
                 <div>
-                    <Button label="Отмена" icon="pi pi-times" text @click="objectDialog = false" />
-                    <Button label="Сохранить" icon="pi pi-check" text severity="success" @click="saveObject" />
+                    <Button label="Отмена" icon="pi pi-times" text @click="objectDialog = false"/>
+                    <Button label="Сохранить" icon="pi pi-check" text severity="success" @click="saveObject"/>
                 </div>
             </div>
         </template>
@@ -63,19 +79,31 @@
     <Dialog v-model:visible="propertyDialog" :header="header" modal class="p-fluid w-8 lg:w-4">
         <div class="field">
             <label class="mb-3">Свойство объекта</label>
-            <Dropdown v-model="property" :options="getObjectProperties" showClear optionLabel="property_type" placeholder="Выберите свойство объекта" />
+            <Dropdown
+                v-model="property"
+                :options="getObjectProperties"
+                showClear
+                optionLabel="property_type"
+                placeholder="Выберите свойство объекта"
+            />
         </div>
         <div class="field">
             <label class="mb-3">Единица измерения</label>
-            <Dropdown v-model="value" :options="values" showClear optionLabel="value_type" placeholder="Выберите единицу измерения" />
+            <Dropdown
+                v-model="value"
+                :options="values"
+                showClear
+                optionLabel="value_type"
+                placeholder="Выберите единицу измерения"
+            />
         </div>
         <div class="field">
             <label>Путь объекта</label>
-            <InputText v-model="path" required />
+            <InputText v-model="path" required/>
         </div>
         <template #footer>
-            <Button label="Отмена" icon="pi pi-times" text @click="propertyDialog = false" />
-            <Button label="Сохранить" icon="pi pi-check" text severity="success" @click="addPropertyForObject" />
+            <Button label="Отмена" icon="pi pi-times" text @click="propertyDialog = false"/>
+            <Button label="Сохранить" icon="pi pi-check" text severity="success" @click="addPropertyForObject"/>
         </template>
     </Dialog>
 
@@ -178,8 +206,8 @@ export default {
                 propertyType: this.property,
                 path: this.path
             };
-            await propertyapi.addPropertyForObject(postdata).then(() => {
-                propertyapi.getObjectProperties(this.selectedObject.object_id).then(res => {
+            await propertyapi.createPropertyForObject(postdata).then(async () => {
+                await propertyapi.getObjectProperties(this.selectedObject.object_id).then(res => {
                     this.selectedObject.objectProperties = res.data;
                 });
             }).catch(e => {
@@ -200,8 +228,8 @@ export default {
                 icon: 'pi pi-exclamation-triangle',
                 acceptClass: 'p-button-danger',
                 accept: async () => {
-                    await propertyapi.deleteObjectProperty(e.data.property_id).then(() => {
-                        propertyapi.getObjectProperties(this.selectedObject.object_id).then(res => {
+                    await propertyapi.deleteObjectProperty(e.data.property_id).then(async () => {
+                        await propertyapi.getObjectProperties(this.selectedObject.object_id).then(res => {
                             this.selectedObject.objectProperties = res.data;
                         }).catch(e => {
                             if (e.response.data === 'Ничего не найдено') {

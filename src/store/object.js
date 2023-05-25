@@ -33,28 +33,28 @@ export default {
         },
     },
     actions: {
-        getObjects({commit}) {
-            return objectapi.getAllObjects().then(res => {
+        async getObjects({commit}) {
+            return await objectapi.getAllObjects().then(res => {
                 commit('setObjects', res.data);
             });
         },
-        getTypes({commit}) {
-            return objectapi.getAllObjectTypes().then(res => {
+        async getTypes({commit}) {
+            return await objectapi.getAllObjectTypes().then(res => {
                 commit('setTypes', res.data);
             });
         },
-        getEvents({commit}) {
-            return eventapi.getAllEventTypes().then(res => {
+        async getEvents({commit}) {
+            return await eventapi.getAllEventTypes().then(res => {
                 commit('setEvents', res.data);
             });
         },
-        getCategories({commit}) {
-            return categoryapi.getAllCategoryTypes().then(res => {
+        async getCategories({commit}) {
+            return await categoryapi.getAllCategoryTypes().then(res => {
                 commit('setCategories', res.data);
             });
         },
-        getProperties({commit}) {
-            return propertyapi.getAllPropertyTypes().then(res => {
+        async getProperties({commit}) {
+            return await propertyapi.getAllPropertyTypes().then(res => {
                 commit('setProperties', res.data);
             });
         }

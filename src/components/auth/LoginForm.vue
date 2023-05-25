@@ -16,16 +16,12 @@ export default {
         }
     },
     methods: {
-        auth() {
-            this.$store.dispatch('onLogin', {
+        async auth() {
+            await this.$store.dispatch('onLogin', {
                 username: this.username,
                 password: this.password
             }).catch((e) => {
-                this.$toast.add({
-                    severity: 'error',
-                    detail: e.response.data,
-                    life: 3000
-                });
+                this.$toast.add({severity: 'error', detail: e.response.data, life: 3000});
             });
         }
     }

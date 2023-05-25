@@ -9,7 +9,7 @@ class AuthApi {
     }
 
     register(userdata) {
-        return $axios.post(url + "/register", userdata);
+        return $axios.post(url + "/registration", userdata);
     }
 
 }

@@ -118,9 +118,54 @@ const settings = {
     version: '2.1'
 }
 
+app.use(PrimeVue, {
+    locale: {
+        startsWith: 'Начинается с',
+        contains: 'Содержит',
+        notContains: 'Не содержит',
+        endsWith: 'Заканчивается с',
+        equals: 'Равно',
+        notEquals: 'Не равно',
+        noFilter: 'Без фильтра',
+        lt: 'Меньше чем',
+        lte: 'Меньше чем или рано',
+        gt: 'Больше чем',
+        gte: 'Больше чем или равно',
+        dateIs: 'Date is',
+        dateIsNot: 'Date is not',
+        dateBefore: 'Date is before',
+        dateAfter: 'Date is after',
+        clear: 'Очистить',
+        apply: 'Применить',
+        matchAll: 'Match All',
+        matchAny: 'Match Any',
+        addRule: 'Добавить правило',
+        removeRule: 'Удалить правило',
+        accept: 'Да',
+        reject: 'Нет',
+        choose: 'Выбор',
+        upload: 'Загрузка',
+        cancel: 'Отмена',
+        dayNames: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
+        dayNamesShort: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+        dayNamesMin: ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"],
+        monthNames: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+        monthNamesShort: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
+        today: 'Сегодня',
+        weekHeader: 'Wk',
+        firstDayOfWeek: 0,
+        dateFormat: 'mm/dd/yy',
+        weak: 'Неделя',
+        medium: 'Medium',
+        strong: 'Strong',
+        passwordPrompt: 'Введите пароль',
+        emptyFilterMessage: 'Результатов нет',
+        emptyMessage: 'Нет доступных опций'
+    }
+});
+
 app.use(router);
 app.use(store);
-app.use(PrimeVue);
 app.use(ToastService);
 app.use(ConfirmationService);
 app.use(DialogService);

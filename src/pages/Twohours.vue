@@ -36,11 +36,11 @@ export default {
         }
     },
     methods: {
-        getData(date) {
+        async getData(date) {
             if (this.getSelectedObject == null) return;
 
             this.loading = true;
-            eventapi.getTwohours(this.getSelectedObject.object_id, date).then(res => {
+            await eventapi.getTwohours(this.getSelectedObject.object_id, date).then(res => {
                 this.object = res.data;
                 this.loading = false;
                 let arr = [];

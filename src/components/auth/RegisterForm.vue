@@ -5,7 +5,8 @@
         <InputText placeholder="Имя" type="text" class="w-full mb-3" v-model="name" required/>
         <InputText placeholder="Отчество" type="text" class="w-full mb-3" v-model="patronymic" required/>
         <InputText placeholder="Электронный адрес" type="email" class="w-full mb-3" v-model="email" required/>
-        <InputMask placeholder="Номер телефона" date="phone" class="w-full mb-3" mask="+7 (999) 999-99-99" v-model="phone" required/>
+        <InputMask placeholder="Номер телефона" date="phone" class="w-full mb-3" mask="+7 (999) 999-99-99"
+                   v-model="phone" required/>
         <InputText placeholder="Имя пользователя" type="text" class="w-full mb-3" v-model="login" required/>
         <InputText placeholder="Пароль" type="password" class="w-full mb-3" v-model="password" minlength="6" required/>
         <InputText placeholder="Подтвердите пароль" type="password" class="w-full mb-3" v-model="password_confirm"
@@ -29,11 +30,11 @@ export default {
         }
     },
     methods: {
-        register() {
+        async register() {
             if (this.password !== this.password_confirm) {
                 this.$toast.add({severity: 'error', detail: "Пароли не совпадают", life: 3000});
-            } else
-                this.$store.dispatch('onRegister', {
+            } else {
+                await this.$store.dispatch('onRegister', {
                     surname: this.surname,
                     name: this.name,
                     patronymic: this.patronymic,
@@ -42,12 +43,9 @@ export default {
                     username: this.login,
                     password: this.password
                 }).catch((e) => {
-                    this.$toast.add({
-                        severity: 'error',
-                        detail: e.response.data,
-                        life: 3000
-                    });
+                    this.$toast.add({severity: 'error', detail: e.response.data, life: 3000});
                 });
+            }
         },
     }
 }

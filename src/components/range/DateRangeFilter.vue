@@ -19,7 +19,8 @@ export default {
     },
     methods: {
         submit() {
-            this.$emit('date',
+            this.$emit(
+                'date',
                 this.date_start ? this.date_start.toLocaleDateString('sv-SE') : null,
                 this.date_end ? this.date_end.toLocaleDateString('sv-SE') : null
             );

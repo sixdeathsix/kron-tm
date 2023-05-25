@@ -1,5 +1,5 @@
 <template>
-    <DateRangeFilter @date="getEvents" />
+    <DateRangeFilter @date="getEvents"/>
     <MyDataTable
         :columns="eventColumns"
         :value="events"
@@ -36,9 +36,9 @@ export default {
         }
     },
     methods: {
-        getEvents(start, end) {
+        async getEvents(start, end) {
             this.loading = true;
-            eventapi.getAllEvents(this.getSelectedObject && this.getSelectedObject.object_id || '', start || null, end || null).then(res => {
+            await eventapi.getAllEvents(this.getSelectedObject && this.getSelectedObject.object_id || '', start || null, end || null).then(res => {
                 this.events = res.data;
                 this.loading = false;
             }).catch(e => {
@@ -62,7 +62,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-
-</style>

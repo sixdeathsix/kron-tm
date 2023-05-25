@@ -28,8 +28,8 @@ export default {
         }
     },
     actions: {
-        onLogin({commit}, {username, password}) {
-            return authapi.login({username, password}).then((res) => {
+        async onLogin({commit}, {username, password}) {
+            return await authapi.login({username, password}).then((res) => {
                 commit('setToken', res.data.accessToken);
                 commit('setUsername', res.data.username);
                 commit('setUserRole', res.data.role);
@@ -37,8 +37,8 @@ export default {
             });
         },
 
-        onRegister({commit}, {surname, name, patronymic, email, phone, username, password}) {
-            return authapi.register({surname, name, patronymic, email, phone, username, password}).then((res) => {
+        async onRegister({commit}, {surname, name, patronymic, email, phone, username, password}) {
+            return await authapi.register({surname, name, patronymic, email, phone, username, password}).then((res) => {
                 commit('setToken', res.data.accessToken);
                 commit('setUsername', res.data.username);
                 commit('setUserRole', res.data.role);

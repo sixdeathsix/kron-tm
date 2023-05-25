@@ -1,16 +1,16 @@
 <template>
     <DataTable
-            :value="value"
-            :loading="loading"
-            :empty="empty"
-            v-model:filters="filters"
-            :paginator="pagination"
-            showGridlines
-            removableSort
-            :rows="10"
-            :rowClass="rowClass"
-            filterDisplay="row"
-            @row-dblclick="dblclick"
+        :value="value"
+        :loading="loading"
+        :empty="empty"
+        v-model:filters="filters"
+        :paginator="pagination"
+        showGridlines
+        removableSort
+        :rows="10"
+        :rowClass="rowClass"
+        filterDisplay="row"
+        @row-dblclick="dblclick"
     >
         <template #empty>
             <div class="flex w-12 justify-content-center align-items-center p-3 font-bold text-xl">
@@ -28,11 +28,11 @@
         </template>
 
         <template #paginatorend v-if="paginatorFunc">
-            <Button type="button" @click="paginatorFunc" :icon="icon" :severity="severity || 'success'" autofocus />
+            <Button type="button" @click="paginatorFunc" :icon="icon" :severity="severity || 'success'" autofocus/>
         </template>
 
         <template #paginatorend v-if="xlsxname && headers">
-            <Button type="button" @click="dwn" :icon="icon" :severity="severity || 'success'" autofocus />
+            <Button type="button" @click="dwn" :icon="icon" :severity="severity || 'success'" autofocus/>
         </template>
 
         <template v-for="col in columns">
@@ -48,12 +48,12 @@
             <Column :header="col.header" :field="col.field" :showFilterMenu="false" style="width: 10vw" v-if="col.data">
                 <template #filter="{ filterModel, filterCallback }">
                     <MultiSelect
-                            v-model="filterModel.value"
-                            @change="filterCallback()"
-                            :options="(getOptions[col.option] || []).map(opt => opt[col.field])"
-                            :placeholder="col.placeholder || col.header"
-                            class="p-column-filter"
-                            style="width: 10vw"
+                        v-model="filterModel.value"
+                        @change="filterCallback()"
+                        :options="(getOptions[col.option] || []).map(opt => opt[col.field])"
+                        :placeholder="col.placeholder || col.header"
+                        class="p-column-filter"
+                        style="width: 10vw"
                     >
                         <template #option="slotProps">
                             <span>{{ slotProps.option }}</span>
@@ -109,14 +109,14 @@ export default {
         dwn() {
             const headers = this.headers;
             const worksheet = XLSX.utils.json_to_sheet(this.value);
-            const workbook  = XLSX.utils.book_new();
+            const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, 'Лист1');
-            XLSX.utils.sheet_add_aoa(worksheet, [headers], { origin: 'A1'});
+            XLSX.utils.sheet_add_aoa(worksheet, [headers], {origin: 'A1'});
             worksheet["!cols"] = [];
             for (let i = 0; i < this.headers.length; i++) {
                 worksheet["!cols"].push({wch: this.headers[i].length + 5});
             }
-            XLSX.writeFile(workbook ,`${this.xlsxname}.xlsx`)
+            XLSX.writeFile(workbook, `${this.xlsxname}.xlsx`)
         }
     },
     computed: {

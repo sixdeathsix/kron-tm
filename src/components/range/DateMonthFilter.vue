@@ -16,7 +16,8 @@ export default {
     },
     methods: {
         submit() {
-            this.$emit('date',
+            this.$emit(
+                'date',
                 this.date ? this.date.toLocaleDateString('sv-SE').substring(0, 7) : null,
             );
         }

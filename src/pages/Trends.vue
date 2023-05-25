@@ -20,10 +20,10 @@ export default {
         };
     },
     methods: {
-        getData(start, end) {
+        async getData(start, end) {
             if (this.getSelectedObject == null) return;
 
-            eventapi.getTrends(this.getSelectedObject.object_id, start, end).then(res => {
+            await eventapi.getTrends(this.getSelectedObject.object_id, start, end).then(res => {
                 this.object = res.data;
             }).catch(e => {
                 this.$toast.add({severity: 'error', detail: 'Произошла ошибка', life: 3000});
