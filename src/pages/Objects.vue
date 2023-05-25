@@ -12,11 +12,11 @@
     <Dialog v-model:visible="objectDialog" :header="header" modal class="p-fluid w-10 lg:w-8 xl:w-6">
         <div class="field">
             <label>Название объекта</label>
-            <InputText v-model="selectedObject.object_name" required/>
+            <InputText v-model="selectedObject.object_name"/>
         </div>
         <div class="field">
             <label>Номер фланца</label>
-            <InputText v-model="selectedObject.flange_no" required/>
+            <InputText type="number" v-model="selectedObject.flange_no"/>
         </div>
         <div class="field" v-if="!selectedObject.object_type">
             <label class="mb-3">Тип объекта</label>
@@ -25,7 +25,7 @@
         </div>
         <div class="field">
             <label>Описание</label>
-            <Textarea v-model="selectedObject.description" required rows="3" cols="20"/>
+            <Textarea v-model="selectedObject.description" rows="3" cols="20"/>
         </div>
         <div class="formgrid grid">
             <div class="field col">
