@@ -17,11 +17,11 @@ class PropertyApi {
     }
 
     createPropertyForObject(postdata) {
-        return $axios.post(url, postdata);
+        return $axios.post("admin/" + url, postdata);
     }
 
     deleteObjectProperty(property_id) {
-        return $axios.delete(url + `?property_id=${property_id}`)
+        return $axios.delete("admin/" + url + `?property_id=${property_id}`)
     }
 
 }
