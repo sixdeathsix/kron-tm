@@ -3,6 +3,7 @@
         :columns="objectColumns"
         :value="objects"
         :loading="loading"
+        :empty="empty"
         :pagination="true"
         :headers="headers"
         icon="pi pi-file-excel"
@@ -20,6 +21,7 @@ export default {
         return {
             objects: null,
             loading: true,
+            empty: false,
             headers: ["Номер объекта", "Объект", "Тип объекта", "Номер фланца", "Описание", "Событие", "Дата события", "Текущие сутки", "Пред сутки"],
             objectColumns: [
                 {header: 'Объект', field: 'object_name', sortable: true, link: {name: "object", param: 'object_id'}},
@@ -41,10 +43,13 @@ export default {
         async getMonitoring() {
             await objectapi.getAllMonitoringObjects().then(res => {
                 this.objects = res.data;
-                this.loading = false;
             }).catch(e => {
+                if(e.response.data === 'Ничего не найдено') {
+                    return this.empty = true;
+                }
                 this.$toast.add({severity: 'error', detail: 'Произошла ошибка', life: 3000});
             });
+            this.loading = false;
         }
     },
     mounted() {

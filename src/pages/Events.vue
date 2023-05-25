@@ -6,6 +6,7 @@
         :loading="loading"
         :pagination="true"
         :headers="headers"
+        :empty="empty"
         icon="pi pi-file-excel"
         xlsxname="События"
     />
@@ -23,6 +24,7 @@ export default {
         return {
             events: null,
             loading: true,
+            empty: false,
             headers: ["Объект", "Номер фланца", "Событие", "Категория", "Дата события", "Свойство", "Значение", "x", "y"],
             eventColumns: [
                 {header: 'Объект', field: 'object_name'},
@@ -40,10 +42,13 @@ export default {
             this.loading = true;
             await eventapi.getAllEvents(this.getSelectedObject && this.getSelectedObject.object_id || '', start || null, end || null).then(res => {
                 this.events = res.data;
-                this.loading = false;
             }).catch(e => {
+                if(e.response.data === 'Ничего не найдено') {
+                    return this.empty = true;
+                }
                 this.$toast.add({severity: 'error', detail: 'Произошла ошибка', life: 3000});
             });
+            this.loading = false;
         }
     },
     computed: {
