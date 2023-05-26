@@ -162,17 +162,18 @@ export default {
         async editProduct(e) {
             this.selectedObject = e.data;
             this.header = e.data.object_name;
+
             await propertyapi.getObjectProperties(e.data.object_id).then(res => {
                 this.selectedObject.objectProperties = res.data;
+                this.loading = false;
             }).catch(err => {
-                this.selectedObject.objectProperties = null;
-                this.empty = true;
                 if (err.response.data !== 'Ничего не найдено') {
-                    this.$toast.add({severity: 'error', detail: 'Произошла ошибка', life: 3000});
+                    return this.$toast.add({severity: 'error', detail: 'Произошла ошибка', life: 3000});
                 }
+                this.loading = false;
+                this.empty = true;
             });
 
-            this.loading = false;
             this.objectDialog = true;
         },
         async saveObject() {
@@ -206,41 +207,41 @@ export default {
                 propertyType: this.property,
                 path: this.path
             };
-            await propertyapi.createPropertyForObject(postdata).then(async () => {
-                await propertyapi.getObjectProperties(this.selectedObject.object_id).then(res => {
-                    this.selectedObject.objectProperties = res.data;
-                });
-            }).catch(e => {
+
+            try {
+                await propertyapi.createPropertyForObject(postdata);
+                let objectPropertiesResponse = await propertyapi.getObjectProperties(this.selectedObject.object_id);
+                this.selectedObject.objectProperties = objectPropertiesResponse.data;
+                await this.$store.dispatch('getObjects');
+            } catch (e) {
                 this.$toast.add({severity: 'error', detail: 'Произошла ошибка', life: 3000});
-            });
+            }
 
             this.property = null;
             this.value = null;
             this.path = null;
-            this.$store.dispatch('getObjects');
             this.propertyDialog = false;
         },
         confirmPropertyDelete(e) {
-            console.log(e.data.property_id)
             this.$confirm.require({
                 message: 'Вы точно хотите удалить свойство у объекта?',
                 header: 'Подтвердите удаление',
                 icon: 'pi pi-exclamation-triangle',
                 acceptClass: 'p-button-danger',
                 accept: async () => {
-                    await propertyapi.deleteObjectProperty(e.data.property_id).then(async () => {
-                        await propertyapi.getObjectProperties(this.selectedObject.object_id).then(res => {
-                            this.selectedObject.objectProperties = res.data;
-                        }).catch(e => {
-                            if (e.response.data === 'Ничего не найдено') {
-                                this.selectedObject.objectProperties = null;
-                            }
-                        });
-                        this.$toast.add({severity: 'success', detail: 'Свойство успешно удалено', life: 3000});
-                    }).catch(e => {
+
+                    try {
+                        await propertyapi.deleteObjectProperty(e.data.property_id);
+                        let objectPropertiesResponse = await propertyapi.getObjectProperties(this.selectedObject.object_id);
+                        this.selectedObject.objectProperties = objectPropertiesResponse.data;
+                        await this.$store.dispatch('getObjects');
+                    } catch (e) {
+                        if (e.response.data === 'Ничего не найдено') {
+                           return this.selectedObject.objectProperties = null;
+                        }
                         this.$toast.add({severity: 'error', detail: 'Произошла ошибка', life: 3000});
-                    });
-                    this.$store.dispatch('getObjects');
+                    }
+
                     this.propertyDialog = false;
                 },
                 reject: () => {
