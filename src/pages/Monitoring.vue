@@ -30,10 +30,6 @@ export default {
                 {header: 'Описание', field: 'description', sortable: true},
                 {header: 'Накоп пред сут', field: 'tomorrow_value', sortable: true},
                 {header: 'Накоп тек сут', field: 'value', sortable: true},
-                // {header: 'Qреж м3/сут', field: ''},
-                // {header: 'Qсут м3/сут', field: ''},
-                // {header: 'Отк от режима, м3', field: ''},
-                // {header: 'Рлин, атм', field: ''},
                 {header: 'Событие', field: 'event_type', sortable: true},
                 {header: 'Дата события', field: 'event_date', sortable: true},
             ]
